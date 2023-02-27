@@ -68,10 +68,14 @@ public class UsedCarSearch {
         Assert.assertEquals(elements.size(), 15);
 
         Thread.sleep(1000);
-        List <WebElement> titleElements = driver.findElements(By.xpath("//h4[@class='vO42pn']"));
-        for (int i=1; i<titleElements.size(); i++){
-          Assert.assertTrue(titleElements.get(i).getText().contains("Lamborghini Gallardo"), "The title contains Lamborghini Gallardo");
+        List <WebElement> titleElements = driver.findElements(By.xpath("//h4[@class='vO42pn']/ancestor::a[not(contains(@href, 'FEATURED'))]"));
+        for (WebElement titleElement: titleElements){
+            Assert.assertTrue(titleElement.getText().contains("Lamborghini Gallardo"), "The title contains Lamborghini Gallardo");
         }
+        //List <WebElement> titleElements = driver.findElements(By.xpath("//h4[@class='vO42pn']"));
+        //for (int i=1; i<titleElements.size(); i++){
+         //Assert.assertTrue(titleElements.get(i).getText().contains("Lamborghini Gallardo"), "The title contains Lamborghini Gallardo");
+       //}
 
 
         new Select(driver.findElement(By.id("sort-listing"))).selectByVisibleText("Lowest price first");
@@ -119,12 +123,14 @@ public class UsedCarSearch {
         Thread.sleep(2000);
         awdElements.get(awdElements.size()-1).click();
 
-        driver.findElement(By.xpath("//button[@class='r1inOn']")).click();
+        driver.findElement(By.xpath("//button[@class='r1inOn']")).click(); // go back to the result page
         Thread.sleep(2000);
         List <WebElement> images = driver.findElements(By.xpath("//img[@class='C6f2e2 bmTmAy']"));
 
-        String viewedtext = images.get(images.size()-1).findElement(By.xpath("//parent ::div/following-sibling::div/p")).getText();
+        String viewedtext = images.get(images.size()-1).findElement(By.xpath("//parent ::div/following-sibling::div/p")).getText(); //find the "Viewed" of the last search result
         Assert.assertEquals(viewedtext, "Viewed", "The link is not viewed");
+
+        driver.quit();
 
 
 
